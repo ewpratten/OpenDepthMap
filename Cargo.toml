@@ -1,0 +1,6 @@
+[workspace]
+members = [
+    "libleap",
+    "libodm",
+    "snapscan",
+]
