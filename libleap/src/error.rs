@@ -1,6 +1,6 @@
 use leap_sys::eLeapRS;
 
-#[derive(FromPrimitive)]
+#[derive(FromPrimitive, Debug)]
 pub enum LeapError {
     /// The operation completed successfully.
     Success = 0,
