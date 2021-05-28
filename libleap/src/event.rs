@@ -1,3 +1,5 @@
+//! Wrappers for LeapMotion device events
+
 use leap_sys::{
     LEAP_CONFIG_CHANGE_EVENT, LEAP_CONFIG_RESPONSE_EVENT, LEAP_CONNECTION_EVENT,
     LEAP_CONNECTION_LOST_EVENT, LEAP_CONNECTION_MESSAGE, LEAP_DEVICE_EVENT,
@@ -6,7 +8,7 @@ use leap_sys::{
 };
 
 #[derive(Debug)]
-pub enum EventType {
+pub enum Event {
     Invalid,
     Connection(*const LEAP_CONNECTION_EVENT),
     ConnectionLost(*const LEAP_CONNECTION_LOST_EVENT),
@@ -26,7 +28,7 @@ pub enum EventType {
     HeadPose(*const LEAP_HEAD_POSE_EVENT),
 }
 
-impl From<LEAP_CONNECTION_MESSAGE> for EventType {
+impl From<LEAP_CONNECTION_MESSAGE> for Event {
     #[allow(non_snake_case)]
     fn from(message: LEAP_CONNECTION_MESSAGE) -> Self {
         unsafe {
