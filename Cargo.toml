@@ -1,7 +1,2 @@
 [workspace]
-members = [
-    "libleap-sys",
-#     "libleap",
-#     "libodm",
-#     "snapscan",
-]
+members = ["libodm"]
