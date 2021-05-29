@@ -3,66 +3,60 @@
 
 using namespace Leap;
 
-class LeapEventListener : public Listener
+//---- Start Public Functions ----//
+extern "C"
 {
-public:
-    virtual void onConnect(const Controller &);
-    virtual void onDisconnect(const Controller &);
-    virtual void onFrame(const Controller &);
-};
-
-void LeapEventListener::onConnect(const Controller &controller)
-{
-    std::cout << "Connected" << std::endl;
-    // Enable gestures, set Config values:
-    controller.enableGesture(Gesture::TYPE_SWIPE);
-    controller.config().setFloat("Gesture.Swipe.MinLength", 200.0);
-    controller.config().save();
+    void beginEventLoop();
+    bool isControllerCreated();
+    void endEventLoop();
+    bool imageExists();
+    int getImageHeight();
+    int getImageWidth();
+    int getImageBPP();
+    const unsigned char *getImageLeft();
+    const unsigned char *getImageRight();
 }
+//---- End Public Functions ----//
 
-//Not dispatched when running in a debugger
-void LeapEventListener::onDisconnect(const Controller &controller)
+//---- Start Globals ----//
+Controller *controller = nullptr;
+ImageList images;
+//---- End Globals ----//
+
+#include "listener.cc"
+
+//---- Start Public Function Impls ----//
+
+void beginEventLoop()
 {
-    std::cout << "Disconnected" << std::endl;
-}
+    if (controller == nullptr)
+    {
+        // Create a controller
+        controller = new Controller();
 
-void LeapEventListener::onFrame(const Controller &controller)
-{
-    std::cout << "New frame available" << std::endl;
-    Frame frame = controller.frame();
-    
-    // Get the camera images
-    ImageList images = frame.images();
+        // Set device policy
+        controller->setPolicyFlags(Controller::POLICY_IMAGES);
 
-    // We require two images
-    if (images.count() != 2){
-        std::cout << "Not enough images received" << std::endl;
-        return;
+        // Set up event handling
+        LeapEventListener listener;
+        controller->addListener(listener);
     }
-    
-    // Build a protobuf repr of the image data
-    FrameStreamMessage message;
-    message.set_frame_height(images[0].height());
-    message.set_frame_width(images[0].width());
-    message.set_pixel_bytes(images[0].bytesPerPixel());
-    message.set_left_image((char*) images[0].data());
-    message.set_right_image((char*) images[1].data());
-
-    
 }
 
-int main()
+void endEventLoop()
 {
-
-    // Access to the LeapMotion device along with callback setup
-    Controller controller;
-    LeapEventListener listener;
-    controller.addListener(listener);
-    controller.setPolicy(Leap::Controller::POLICY_IMAGES);
-
-    while(true){
-
+    if (controller != nullptr)
+    {
+        delete controller;
     }
-
-    return 0;
 }
+
+bool isControllerCreated() { return controller != nullptr; }
+bool imageExists() { return images.count() == 2; }
+int getImageHeight() { return images[0].height(); }
+int getImageWidth() { return images[0].width(); }
+int getImageBPP() { return images[0].bytesPerPixel(); }
+const unsigned char *getImageLeft() { return images[0].data(); }
+const unsigned char *getImageRight() { return images[1].data(); }
+
+//---- End Public Function Impls ----//
