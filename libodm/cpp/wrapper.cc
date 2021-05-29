@@ -7,6 +7,7 @@ using namespace Leap;
 extern "C" void beginEventLoop();
 extern "C" bool isControllerCreated();
 extern "C" void endEventLoop();
+extern "C" void updateFrame();
 extern "C" bool imageExists();
 extern "C" int getImageHeight();
 extern "C" int getImageWidth();
@@ -17,10 +18,8 @@ extern "C" const unsigned char *getImageRight();
 
 //---- Start Globals ----//
 Controller *controller = nullptr;
-// ImageList images;
+Frame *frame = nullptr;
 //---- End Globals ----//
-
-#include "listener.cc"
 
 //---- Start Public Function Impls ----//
 
@@ -34,9 +33,6 @@ void beginEventLoop()
         // Set device policy
         controller->setPolicyFlags(Controller::POLICY_IMAGES);
 
-        // Set up event handling
-        // LeapEventListener listener;
-        // controller->addListener(listener);
     }
 }
 
@@ -46,6 +42,14 @@ void endEventLoop()
     {
         delete controller;
     }
+}
+
+void updateFrame()
+{
+    // free(frame);
+    // Frame f = controller->frame();
+    // frame = (Frame*) malloc(sizeof(f));
+    // memccpy(frame, f);
 }
 
 bool isControllerCreated() { return controller != nullptr; }

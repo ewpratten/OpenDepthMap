@@ -10,6 +10,8 @@ build = "build.rs"
 [dependencies]
 libc = "0.2.95"
 log = "0.4.14"
+glam = "0.15.2"
+opencv = "0.53.0"
 
 [build-dependencies]
 cc = "1.0"

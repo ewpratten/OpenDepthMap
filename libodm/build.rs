@@ -14,5 +14,4 @@ fn main() {
     // Make cargo auto-rebuild these files
     println!("cargo:rerun-if-changed=libodm/build.rs");
     println!("cargo:rerun-if-changed=libodm/cpp/wrapper.cc");
-    println!("cargo:rerun-if-changed=libodm/cpp/listener.cc");
 }
