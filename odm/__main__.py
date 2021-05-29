@@ -9,26 +9,48 @@ FORMAT = '%(levelname)s %(name)s %(asctime)-15s %(filename)s:%(lineno)d %(messag
 logging.basicConfig(format=FORMAT)
 logging.getLogger().setLevel(logging.DEBUG)
 
+# Config
+BLUR_KERNEL_SIZE = 15
+THRESH_MIN_PIXEL = 32
+BLOB_MIN_AREA = 40
+
 # Load in libodm
 sys.path.append(os.getcwd() + "/target/debug")
 import libpylibodm as pylibodm
 
 def handle_image_data(stereo, left_image, right_image):
 
-    # Convert images to something opencv can use
+     # Convert images to something opencv can use
     left_image_cv = np.frombuffer(bytes(left_image.buffer), np.uint8).reshape(
         left_image.height, left_image.width)
     right_image_cv = np.frombuffer(bytes(right_image.buffer), np.uint8).reshape(
         left_image.height, left_image.width)
 
+    # Smooth out the raw images
+    kernel = np.ones((BLUR_KERNEL_SIZE,BLUR_KERNEL_SIZE),np.float32)/(BLUR_KERNEL_SIZE * BLUR_KERNEL_SIZE)
+    left_image_cv_smooth = cv2.filter2D(left_image_cv,-1,kernel)
+    right_image_cv_smooth = cv2.filter2D(right_image_cv,-1,kernel)
+
     # Compute a disparity map
-    disparity = stereo.compute(left_image_cv, right_image_cv)
+    disparity = stereo.compute(left_image_cv_smooth, right_image_cv_smooth)
     disparity = cv2.convertScaleAbs(disparity, alpha=1.5)
+
+    # Contour filtering
+    ret, threshold = cv2.threshold(disparity, THRESH_MIN_PIXEL, 255, cv2.THRESH_BINARY)
+    contours, hierarchy = cv2.findContours(threshold,
+                                           cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    filtered_contours = [cnt for cnt in contours if cv2.contourArea(cnt) > BLOB_MIN_AREA]      
+    mask = np.zeros(disparity.shape, np.uint8)                                 
+    cv2.drawContours(mask, filtered_contours, -1, (255), thickness=cv2.FILLED)
+
+    # Mask out the disparity map
+    masked_disparity = cv2.bitwise_and(disparity, disparity, mask=mask)
 
     cv2.imshow("Left", left_image_cv)
     cv2.imshow("Right", right_image_cv)
     cv2.imshow("Disparity", disparity)
-
+    cv2.imshow("Disparity (masked)", masked_disparity)
+    # cv2.imshow("Mask", mask)
 
 def main() -> int:
     # Handle program arguments
@@ -41,7 +63,7 @@ def main() -> int:
     pylibodm.connect(4)
 
     # Set up depth mapping
-    stereo = cv2.StereoBM_create(numDisparities=32, blockSize=11)
+    stereo = cv2.StereoBM_create(numDisparities=32, blockSize=15)
 
     # Handle data
     while True:
