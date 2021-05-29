@@ -1,2 +1,2 @@
 [workspace]
-members = ["libodm", "odm"]
+members = ["libodm", "leapdebug"]
