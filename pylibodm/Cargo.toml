@@ -11,6 +11,7 @@ crate-type = ["cdylib"]
 
 [dependencies]
 libodm = { version = "0.1.0", path = "../libodm"}
+pyo3-log = "0.3.1"
 
 [dependencies.pyo3]
 version = "0.13.2"
