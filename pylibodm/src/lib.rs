@@ -26,9 +26,13 @@ use libodm::{image::Image, leapmotion::device::DeviceFrame};
 use pyo3::wrap_pyfunction;
 
 #[pyclass]
+#[derive(Debug, Clone)]
 struct PyImage {
+    #[pyo3(get)]
     pub width: u32,
+    #[pyo3(get)]
     pub height: u32,
+    #[pyo3(get)]
     pub buffer: Vec<u8>,
 }
 
@@ -44,8 +48,11 @@ impl IntoPy<PyImage> for Image<'_> {
 
 #[pyclass]
 struct PyDeviceFrame {
+    #[pyo3(get)]
     pub bytes_per_pixel: u8,
+    #[pyo3(get)]
     pub left_camera: PyImage,
+    #[pyo3(get)]
     pub right_camera: PyImage,
 }
 
