@@ -4,18 +4,15 @@
 using namespace Leap;
 
 //---- Start Public Functions ----//
-extern "C"
-{
-    void beginEventLoop();
-    bool isControllerCreated();
-    void endEventLoop();
-    bool imageExists();
-    int getImageHeight();
-    int getImageWidth();
-    int getImageBPP();
-    const unsigned char *getImageLeft();
-    const unsigned char *getImageRight();
-}
+extern "C" void beginEventLoop();
+extern "C" bool isControllerCreated();
+extern "C" void endEventLoop();
+extern "C" bool imageExists();
+extern "C" int getImageHeight();
+extern "C" int getImageWidth();
+extern "C" int getImageBPP();
+extern "C" const unsigned char *getImageLeft();
+extern "C" const unsigned char *getImageRight();
 //---- End Public Functions ----//
 
 //---- Start Globals ----//
@@ -45,10 +42,10 @@ void beginEventLoop()
 
 void endEventLoop()
 {
-    if (controller != nullptr)
-    {
-        delete controller;
-    }
+    // if (controller != nullptr)
+    // {
+    //     delete controller;
+    // }
 }
 
 bool isControllerCreated() { return controller != nullptr; }
