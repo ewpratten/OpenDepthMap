@@ -1,11 +1,11 @@
 fn main() {
 
     // Compile the LeapMotion wrapper (and Leap itself)
-    cc::Build::new().file("cpp/wrapper.cc").flag("-Wno-deprecated").flag("-Wno-deprecated-copy").flag("-L lib").flag("-lLeap").flag("-lstdc++").compile("foo");
+    cc::Build::new().file("cpp/wrapper.cc").flag("-Wno-deprecated").flag("-Wno-deprecated-copy").flag("-L dist").flag("-lLeap").flag("-lstdc++").compile("foo");
     // pkg_config::Config::new().probe("Leap").unwrap();
 
     // Set up the linker to include Leap
-    println!("cargo:rustc-link-search=native=libodm/lib");
+    println!("cargo:rustc-link-search=native=libodm/dist");
     println!("cargo:rustc-link-lib=Leap");
 
     // Set up the linker to include stdc++

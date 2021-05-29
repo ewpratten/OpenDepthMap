@@ -7,4 +7,4 @@ echo "Enabling core dumps"
 ulimit -c unlimited
 
 echo "Starting cargo with new flags"
-LD_LIBRARY_PATH="$(pwd)/libodm/lib:$LD_LIBRARY_PATH" cargo run $@
+LD_LIBRARY_PATH="$(pwd)/libodm/dist:$LD_LIBRARY_PATH" cargo run $@

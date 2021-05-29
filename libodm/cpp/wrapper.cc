@@ -1,5 +1,5 @@
 #include <iostream>
-#include "../lib/Leap.h"
+#include "../dist/Leap.h"
 
 using namespace Leap;
 
