@@ -9,3 +9,6 @@ edition = "2018"
 [dependencies]
 libodm = { version = "0.1.0", path = "../libodm"}
 clap = "2.33.3"
+fern = "0.6.0"
+log = "0.4.14"
+chrono = "0.4.19"

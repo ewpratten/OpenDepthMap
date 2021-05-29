@@ -8,21 +8,21 @@ public:
 
 void LeapEventListener::onConnect(const Controller &controller)
 {
-    std::cout << "LeapMotion Controller: Connected" << std::endl;
+    // std::cout << "LeapMotion Controller: Connected" << std::endl;
 }
 
 //Not dispatched when running in a debugger
 void LeapEventListener::onDisconnect(const Controller &controller)
 {
-    std::cout << "LeapMotion Controller: Disconnected" << std::endl;
+    // std::cout << "LeapMotion Controller: Disconnected" << std::endl;
 }
 
 void LeapEventListener::onFrame(const Controller &controller)
 {
-    std::cout << "New frame available" << std::endl;
-    Frame frame = controller.frame();
+    // std::cout << "New frame available" << std::endl;
+    // Frame frame = controller.frame();
 
-    // Get the camera images
-    images = frame.images();
+    // // Get the camera images
+    // images = frame.images();
 
 }
