@@ -10,9 +10,10 @@ logging.basicConfig(format=FORMAT)
 logging.getLogger().setLevel(logging.DEBUG)
 
 # Config
-BLUR_KERNEL_SIZE = 15
+BLUR_KERNEL_SIZE = 3
 THRESH_MIN_PIXEL = 32
-BLOB_MIN_AREA = 40
+BLOB_MIN_AREA = 120
+HEAT_OVERLAY_ALPHA = 0.5
 
 # Load in libodm
 sys.path.append(os.getcwd() + "/target/debug")
@@ -43,14 +44,20 @@ def handle_image_data(stereo, left_image, right_image):
     mask = np.zeros(disparity.shape, np.uint8)                                 
     cv2.drawContours(mask, filtered_contours, -1, (255), thickness=cv2.FILLED)
 
-    # Mask out the disparity map
-    masked_disparity = cv2.bitwise_and(disparity, disparity, mask=mask)
+    # Build a heatmap
+    heatmap = cv2.applyColorMap(disparity, cv2.COLORMAP_JET)
+    masked_heatmap = cv2.bitwise_and(heatmap, heatmap, mask=mask)
+
+    # Create an overlay from the heatmap
+    output_base = cv2.cvtColor(left_image_cv,cv2.COLOR_GRAY2RGB)
+    output_base_mod = cv2.convertScaleAbs(output_base, alpha=1.5, beta= 20)
+    output = cv2.addWeighted(masked_heatmap, HEAT_OVERLAY_ALPHA, output_base_mod, 1.0, 0.0)
 
     cv2.imshow("Left", left_image_cv)
     cv2.imshow("Right", right_image_cv)
     cv2.imshow("Disparity", disparity)
-    cv2.imshow("Disparity (masked)", masked_disparity)
-    # cv2.imshow("Mask", mask)
+    cv2.imshow("Heatmap", masked_heatmap)
+    cv2.imshow("Output", output)
 
 def main() -> int:
     # Handle program arguments
