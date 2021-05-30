@@ -35,10 +35,9 @@ The LeapMotion devices are dual-sensor infra-red cameras. Through the Image API,
 
 The result is a raw camera view with depth data overlayed on top of it.
 
-| Example Images | |
-| -- | -- |
-| ![](assets/demo1.png) | ![](assets/demo2.png) |
-| ![](assets/demo3.png) | |
+| | Example Images | |
+| -- | -- | -- |
+| ![](assets/demo1.png) | ![](assets/demo2.png) | ![](assets/demo3.png) |
 
  <!-- ---
 Point cloud streams from Leap Motion cameras
