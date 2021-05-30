@@ -39,11 +39,37 @@ The result is a raw camera view with depth data overlayed on top of it.
 | -- | -- | -- |
 | ![](assets/demo1.png) | ![](assets/demo2.png) | ![](assets/demo3.png) |
 
- <!-- ---
-Point cloud streams from Leap Motion cameras
+
+## Building & Running
+
+To build this project, you need a C++ compiler, the [LeapMotion Linux SDK](https://developer.leapmotion.com/sdk-leap-motion-controller/), the Rust toolchain, and the Python3 interpreter on an **x64** Linux host, along with the following packages:
+
 ```
 clang libclang-dev libopencv-dev python3-dev python-dev python3-opencv
-
 ```
 
-https://developer-archive.leapmotion.com/documentation/v2/cpp/index.html -->
+With those installed, pull in all the Python dependencies with:
+
+```sh
+pip3 install -r requirements.txt
+```
+
+Then, build the Rust and C++ code with:
+
+```sh
+cargo build
+```
+
+To run OpenDepthMap, you must first start the LeapMotion driver with:
+
+```sh
+sudo leapd
+```
+
+Then start OpenDepthMap with:
+
+```sh
+./scripts/odm.sh
+```
+
+If you get a timeout error, ensure your LeapMotion device is connected, and try re-running OpenDepthMap.
