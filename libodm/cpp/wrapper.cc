@@ -31,7 +31,8 @@ void beginEventLoop()
         controller = new Controller();
 
         // Set device policy
-        controller->setPolicyFlags(Controller::POLICY_IMAGES);
+        controller->setPolicy(Controller::POLICY_IMAGES);
+        controller->setPolicy(Controller::POLICY_OPTIMIZE_HMD);
 
     }
 }
