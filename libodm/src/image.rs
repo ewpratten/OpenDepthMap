@@ -1,7 +1,15 @@
+//! A simple image representation system using raw data from C code
 
+/// A raw image representation
 pub struct Image<'a> {
+
+    /// Image width
     width: u32,
+
+    /// Image height
     height: u32,
+
+    /// Raw image data
     buffer: &'a [u8],
 }
 

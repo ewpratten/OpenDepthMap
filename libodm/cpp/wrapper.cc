@@ -1,8 +1,6 @@
 #include <iostream>
 #include "../dist/Leap.h"
 
-using namespace Leap;
-
 //---- Start Public Functions ----//
 extern "C" void beginEventLoop();
 extern "C" bool isControllerCreated();
@@ -17,8 +15,8 @@ extern "C" const unsigned char *getImageRight();
 //---- End Public Functions ----//
 
 //---- Start Globals ----//
-Controller *controller = nullptr;
-Frame *frame = nullptr;
+Leap::Controller *controller = nullptr;
+Leap::Frame *frame = nullptr;
 //---- End Globals ----//
 
 //---- Start Public Function Impls ----//
@@ -28,11 +26,11 @@ void beginEventLoop()
     if (controller == nullptr)
     {
         // Create a controller
-        controller = new Controller();
+        controller = new Leap::Controller();
 
         // Set device policy
-        controller->setPolicy(Controller::POLICY_IMAGES);
-        controller->setPolicy(Controller::POLICY_OPTIMIZE_HMD);
+        controller->setPolicy(Leap::Controller::POLICY_IMAGES);
+        controller->setPolicy(Leap::Controller::POLICY_OPTIMIZE_HMD);
 
     }
 }
@@ -47,10 +45,7 @@ void endEventLoop()
 
 void updateFrame()
 {
-    // free(frame);
-    // Frame f = controller->frame();
-    // frame = (Frame*) malloc(sizeof(f));
-    // memccpy(frame, f);
+    // This is currently unused, but may be needed for data caching in the future
 }
 
 bool isControllerCreated() { return controller != nullptr; }
